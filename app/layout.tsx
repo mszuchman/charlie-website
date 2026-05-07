@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "LoDeCharlie MAD — Coming Soon",
     description: "Un café de barrio con alma. Próximamente en Madrid, 2026.",
-    images: ["/logo.jpg"],
+    images: ["/logo.png"],
   },
 };
 

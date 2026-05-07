@@ -74,7 +74,7 @@ export default function Home() {
       <div className="flex flex-col items-center gap-8 mt-10">
         <div className="relative w-72 md:w-96 select-none">
           <Image
-            src="/logo.jpg"
+            src="/logo.png"
             alt="LoDeCharlie MAD"
             width={600}
             height={200}
