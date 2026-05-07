@@ -1,53 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useEffect, FormEvent } from "react";
-
-function useCountdown(target: Date) {
-  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-
-  useEffect(() => {
-    function calc() {
-      const diff = target.getTime() - Date.now();
-      if (diff <= 0) return { days: 0, hours: 0, minutes: 0, seconds: 0 };
-      const days = Math.floor(diff / 86400000);
-      const hours = Math.floor((diff % 86400000) / 3600000);
-      const minutes = Math.floor((diff % 3600000) / 60000);
-      const seconds = Math.floor((diff % 60000) / 1000);
-      return { days, hours, minutes, seconds };
-    }
-
-    setTimeLeft(calc());
-    const id = setInterval(() => setTimeLeft(calc()), 1000);
-    return () => clearInterval(id);
-  }, [target]);
-
-  return timeLeft;
-}
-
-const LAUNCH_DATE = new Date("2026-09-01T08:00:00");
-
-function CountUnit({ value, label }: { value: number; label: string }) {
-  return (
-    <div className="flex flex-col items-center gap-1">
-      <span
-        className="text-4xl sm:text-5xl md:text-7xl font-bold tabular-nums"
-        style={{ fontFamily: "var(--font-playfair)", color: "#5c3317" }}
-      >
-        {String(value).padStart(2, "0")}
-      </span>
-      <span
-        className="text-xs md:text-sm uppercase tracking-widest"
-        style={{ fontFamily: "var(--font-lato)", color: "#a07850", fontWeight: 300 }}
-      >
-        {label}
-      </span>
-    </div>
-  );
-}
+import { useState, FormEvent } from "react";
 
 export default function Home() {
-  const { days, hours, minutes, seconds } = useCountdown(LAUNCH_DATE);
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
 
@@ -96,14 +52,6 @@ export default function Home() {
           <div className="flex-1 h-px" style={{ background: "#d4a96a" }} />
           <span className="text-lg" style={{ color: "#c8935a" }}>☕</span>
           <div className="flex-1 h-px" style={{ background: "#d4a96a" }} />
-        </div>
-
-        {/* Countdown */}
-        <div className="flex gap-4 sm:gap-8 md:gap-10">
-          <CountUnit value={days} label="días" />
-          <CountUnit value={hours} label="horas" />
-          <CountUnit value={minutes} label="min" />
-          <CountUnit value={seconds} label="seg" />
         </div>
 
         {/* Email signup */}
