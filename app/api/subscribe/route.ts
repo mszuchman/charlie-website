@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
         <img src="https://charliecafe.com/logo.png" alt="LoDeCharlie MAD" style="width: 240px; margin-bottom: 32px;" />
         <h1 style="font-size: 24px; margin: 0 0 16px;">¡Gracias por apuntarte!</h1>
         <p style="font-size: 16px; line-height: 1.6; color: #7a4a28; font-style: italic;">
-          Serás de los primeros en saber cuándo abrimos las puertas de LoDeCharlie en Madrid.
+          Seréis de los primeros en saber cuándo abrimos las puertas de LoDeCharlie en Madrid.
         </p>
         <p style="font-size: 14px; color: #a07850; margin-top: 32px;">
           Hasta pronto,<br /><strong>El equipo de LoDeCharlie MAD</strong>

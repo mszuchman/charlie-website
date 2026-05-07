@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://charliecafe.com"),
   title: "LoDeCharlie MAD — Café en Madrid, Próximamente 2026",
   description:
-    "LoDeCharlie es un café de barrio con alma que abre en Madrid en 2026. Apúntate para ser el primero en enterarte.",
+    "LoDeCharlie es un café de barrio con alma que abre en Madrid en 2026. Apúntate para ser de los primeros en enterarte.",
   keywords: ["café Madrid", "coffee shop Madrid", "LoDeCharlie", "cafetería Madrid 2026"],
   authors: [{ name: "LoDeCharlie MAD" }],
   robots: { index: true, follow: true },
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     siteName: "LoDeCharlie MAD",
     title: "LoDeCharlie MAD — Café en Madrid, Próximamente 2026",
     description:
-      "Un café de barrio con alma. Próximamente en Madrid, 2026. Apúntate para ser el primero en enterarte.",
+      "Un café de barrio con alma. Muy pronto en Madrid, 2026. Apúntate para ser de los primeros en enterarte.",
     images: [
       {
         url: "/logo.png",
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "LoDeCharlie MAD — Café en Madrid, Próximamente 2026",
-    description: "Un café de barrio con alma. Próximamente en Madrid, 2026.",
+    description: "Un café de barrio con alma. Muy pronto en Madrid, 2026.",
     images: ["/logo.png"],
   },
 };
@@ -51,7 +51,7 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "CafeOrCoffeeShop",
   name: "LoDeCharlie MAD",
-  description: "Un café de barrio con alma. Próximamente en Madrid, 2026.",
+  description: "Un café de barrio con alma. Muy pronto en Madrid, 2026.",
   url: "https://charliecafe.com",
   logo: "https://charliecafe.com/logo.png",
   address: {

@@ -56,7 +56,7 @@ export default function Home() {
           className="text-center text-lg md:text-xl max-w-sm leading-relaxed"
           style={{ fontFamily: "var(--font-playfair)", color: "#7a4a28", fontStyle: "italic" }}
         >
-          Un café de barrio con alma.<br />Próximamente en Madrid.
+          Un café de barrio con alma.<br />Muy pronto en Madrid.
         </p>
 
         {/* Divider */}
@@ -73,7 +73,7 @@ export default function Home() {
               className="text-center py-4 text-base"
               style={{ fontFamily: "var(--font-lato)", color: "#5c3317" }}
             >
-              ¡Genial! Te avisamos cuando abramos. 🎉
+              ¡Perfecto! Os avisamos en cuanto abramos. 🎉
             </p>
           ) : (
             <form onSubmit={handleSubmit} className="flex flex-col gap-3">
@@ -81,11 +81,11 @@ export default function Home() {
                 className="text-center text-sm"
                 style={{ fontFamily: "var(--font-lato)", color: "#a07850", fontWeight: 300 }}
               >
-                Sé el primero en enterarte
+                Sé de los primeros en enterarte
               </p>
               {isError && (
                 <p className="text-center text-xs" style={{ color: "#c0392b", fontFamily: "var(--font-lato)" }}>
-                  Algo salió mal. Inténtalo de nuevo.
+                  Algo ha ido mal. Inténtalo de nuevo.
                 </p>
               )}
               <div
