@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
-import { sql } from "@vercel/postgres";
+import { Pool } from "pg";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
+
+const pool = new Pool({ connectionString: process.env.POSTGRES_URL });
 
 export async function POST(req: NextRequest) {
   const { email } = await req.json();
@@ -11,26 +13,28 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Email inválido" }, { status: 400 });
   }
 
-  // Store in Vercel Postgres
-  await sql`
-    CREATE TABLE IF NOT EXISTS subscribers (
-      id SERIAL PRIMARY KEY,
-      email TEXT UNIQUE NOT NULL,
-      created_at TIMESTAMPTZ DEFAULT NOW()
-    )
-  `;
+  const client = await pool.connect();
+  try {
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS subscribers (
+        id SERIAL PRIMARY KEY,
+        email TEXT UNIQUE NOT NULL,
+        created_at TIMESTAMPTZ DEFAULT NOW()
+      )
+    `);
 
-  const { rowCount } = await sql`
-    INSERT INTO subscribers (email)
-    VALUES (${email})
-    ON CONFLICT (email) DO NOTHING
-  `;
+    const result = await client.query(
+      `INSERT INTO subscribers (email) VALUES ($1) ON CONFLICT (email) DO NOTHING`,
+      [email]
+    );
 
-  if (rowCount === 0) {
-    return NextResponse.json({ error: "Ya estás apuntado" }, { status: 409 });
+    if (result.rowCount === 0) {
+      return NextResponse.json({ error: "Ya estás apuntado" }, { status: 409 });
+    }
+  } finally {
+    client.release();
   }
 
-  // Send welcome email via Resend
   await resend.emails.send({
     from: "LoDeCharlie MAD <hola@charliecafe.com>",
     to: email,
