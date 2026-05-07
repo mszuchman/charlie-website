@@ -31,7 +31,7 @@ function CountUnit({ value, label }: { value: number; label: string }) {
   return (
     <div className="flex flex-col items-center gap-1">
       <span
-        className="text-5xl md:text-7xl font-bold tabular-nums"
+        className="text-4xl sm:text-5xl md:text-7xl font-bold tabular-nums"
         style={{ fontFamily: "var(--font-playfair)", color: "#5c3317" }}
       >
         {String(value).padStart(2, "0")}
@@ -72,7 +72,7 @@ export default function Home() {
 
       {/* Logo + content */}
       <div className="flex flex-col items-center gap-8 mt-10">
-        <div className="relative w-72 md:w-96 select-none">
+        <div className="relative w-full max-w-xs md:max-w-sm select-none">
           <Image
             src="/logo.png"
             alt="LoDeCharlie MAD"
@@ -99,7 +99,7 @@ export default function Home() {
         </div>
 
         {/* Countdown */}
-        <div className="flex gap-6 md:gap-10">
+        <div className="flex gap-4 sm:gap-8 md:gap-10">
           <CountUnit value={days} label="días" />
           <CountUnit value={hours} label="horas" />
           <CountUnit value={minutes} label="min" />
