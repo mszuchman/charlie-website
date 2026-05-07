@@ -6,14 +6,26 @@ import { useState, FormEvent } from "react";
 export default function Home() {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
+  const isError = status === "error";
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     if (!email) return;
     setStatus("loading");
-    // Replace with your email collection endpoint
-    await new Promise((r) => setTimeout(r, 800));
-    setStatus("done");
+    try {
+      const res = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      if (res.ok || res.status === 409) {
+        setStatus("done");
+      } else {
+        setStatus("error");
+      }
+    } catch {
+      setStatus("error");
+    }
   }
 
   return (
@@ -71,9 +83,14 @@ export default function Home() {
               >
                 Sé el primero en enterarte
               </p>
+              {isError && (
+                <p className="text-center text-xs" style={{ color: "#c0392b", fontFamily: "var(--font-lato)" }}>
+                  Algo salió mal. Inténtalo de nuevo.
+                </p>
+              )}
               <div
                 className="flex rounded-xl overflow-hidden shadow-sm border"
-                style={{ borderColor: "#d4a96a" }}
+                style={{ borderColor: isError ? "#c0392b" : "#d4a96a" }}
               >
                 <input
                   type="email"
