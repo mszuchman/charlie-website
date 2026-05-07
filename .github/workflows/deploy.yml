@@ -12,6 +12,9 @@ jobs:
   lint-and-build:
     name: Lint & Build
     runs-on: ubuntu-latest
+    env:
+      RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+      POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
     steps:
       - uses: actions/checkout@v4
 
@@ -47,6 +50,9 @@ jobs:
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
           github-comment: true
+          vercel-args: >-
+            --env RESEND_API_KEY=${{ secrets.RESEND_API_KEY }}
+            --env POSTGRES_URL=${{ secrets.POSTGRES_URL }}
 
   deploy-production:
     name: Deploy Production
@@ -66,4 +72,7 @@ jobs:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: "--prod"
+          vercel-args: >-
+            --prod
+            --env RESEND_API_KEY=${{ secrets.RESEND_API_KEY }}
+            --env POSTGRES_URL=${{ secrets.POSTGRES_URL }}
