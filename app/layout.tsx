@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Lato } from "next/font/google";
+import { PHProvider } from "./providers";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -79,7 +80,9 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="noise min-h-full flex flex-col">{children}</body>
+      <body className="noise min-h-full flex flex-col">
+        <PHProvider>{children}</PHProvider>
+      </body>
     </html>
   );
 }
