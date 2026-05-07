@@ -1,65 +1,176 @@
+"use client";
+
 import Image from "next/image";
+import { useState, useEffect, FormEvent } from "react";
+
+function useCountdown(target: Date) {
+  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+
+  useEffect(() => {
+    function calc() {
+      const diff = target.getTime() - Date.now();
+      if (diff <= 0) return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+      const days = Math.floor(diff / 86400000);
+      const hours = Math.floor((diff % 86400000) / 3600000);
+      const minutes = Math.floor((diff % 3600000) / 60000);
+      const seconds = Math.floor((diff % 60000) / 1000);
+      return { days, hours, minutes, seconds };
+    }
+
+    setTimeLeft(calc());
+    const id = setInterval(() => setTimeLeft(calc()), 1000);
+    return () => clearInterval(id);
+  }, [target]);
+
+  return timeLeft;
+}
+
+const LAUNCH_DATE = new Date("2026-09-01T08:00:00");
+
+function CountUnit({ value, label }: { value: number; label: string }) {
+  return (
+    <div className="flex flex-col items-center gap-1">
+      <span
+        className="text-5xl md:text-7xl font-bold tabular-nums"
+        style={{ fontFamily: "var(--font-playfair)", color: "#5c3317" }}
+      >
+        {String(value).padStart(2, "0")}
+      </span>
+      <span
+        className="text-xs md:text-sm uppercase tracking-widest"
+        style={{ fontFamily: "var(--font-lato)", color: "#a07850", fontWeight: 300 }}
+      >
+        {label}
+      </span>
+    </div>
+  );
+}
 
 export default function Home() {
+  const { days, hours, minutes, seconds } = useCountdown(LAUNCH_DATE);
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    if (!email) return;
+    setStatus("loading");
+    // Replace with your email collection endpoint
+    await new Promise((r) => setTimeout(r, 800));
+    setStatus("done");
+  }
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <main
+      className="flex-1 flex flex-col items-center justify-between min-h-screen px-6 py-12 md:py-20"
+      style={{ background: "linear-gradient(160deg, #fdf6ee 0%, #f5e6d0 60%, #ecdfc8 100%)" }}
+    >
+      {/* Top accent line */}
+      <div className="w-full max-w-2xl">
+        <div className="h-px w-full" style={{ background: "linear-gradient(90deg, transparent, #c8935a, transparent)" }} />
+      </div>
+
+      {/* Logo + content */}
+      <div className="flex flex-col items-center gap-8 mt-10">
+        <div className="relative w-72 md:w-96 select-none">
+          <Image
+            src="/logo.jpg"
+            alt="LoDeCharlie MAD"
+            width={600}
+            height={200}
+            className="w-full h-auto"
+            priority
+          />
+        </div>
+
+        {/* Tagline */}
+        <p
+          className="text-center text-lg md:text-xl max-w-sm leading-relaxed"
+          style={{ fontFamily: "var(--font-playfair)", color: "#7a4a28", fontStyle: "italic" }}
+        >
+          Un café de barrio con alma.<br />Próximamente en Madrid.
+        </p>
+
+        {/* Divider */}
+        <div className="flex items-center gap-4 w-full max-w-xs">
+          <div className="flex-1 h-px" style={{ background: "#d4a96a" }} />
+          <span className="text-lg" style={{ color: "#c8935a" }}>☕</span>
+          <div className="flex-1 h-px" style={{ background: "#d4a96a" }} />
+        </div>
+
+        {/* Countdown */}
+        <div className="flex gap-6 md:gap-10">
+          <CountUnit value={days} label="días" />
+          <CountUnit value={hours} label="horas" />
+          <CountUnit value={minutes} label="min" />
+          <CountUnit value={seconds} label="seg" />
+        </div>
+
+        {/* Email signup */}
+        <div className="w-full max-w-sm mt-4">
+          {status === "done" ? (
+            <p
+              className="text-center py-4 text-base"
+              style={{ fontFamily: "var(--font-lato)", color: "#5c3317" }}
+            >
+              ¡Genial! Te avisamos cuando abramos. 🎉
+            </p>
+          ) : (
+            <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+              <p
+                className="text-center text-sm"
+                style={{ fontFamily: "var(--font-lato)", color: "#a07850", fontWeight: 300 }}
+              >
+                Sé el primero en enterarte
+              </p>
+              <div
+                className="flex rounded-xl overflow-hidden shadow-sm border"
+                style={{ borderColor: "#d4a96a" }}
+              >
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="tu@email.com"
+                  className="flex-1 px-4 py-3 text-sm outline-none"
+                  style={{
+                    background: "rgba(253,246,238,0.8)",
+                    fontFamily: "var(--font-lato)",
+                    color: "#2c1a0e",
+                  }}
+                />
+                <button
+                  type="submit"
+                  disabled={status === "loading"}
+                  className="px-5 py-3 text-sm font-semibold transition-opacity hover:opacity-80 disabled:opacity-50 cursor-pointer"
+                  style={{
+                    background: "#5c3317",
+                    color: "#fdf6ee",
+                    fontFamily: "var(--font-lato)",
+                  }}
+                >
+                  {status === "loading" ? "..." : "Apúntame"}
+                </button>
+              </div>
+            </form>
+          )}
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className="flex flex-col items-center gap-3 mt-10">
+        <div
+          className="h-px w-40"
+          style={{ background: "linear-gradient(90deg, transparent, #c8935a, transparent)" }}
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+        <p
+          className="text-xs text-center"
+          style={{ fontFamily: "var(--font-lato)", color: "#b08858", fontWeight: 300, letterSpacing: "0.1em" }}
+        >
+          MADRID · 2026
+        </p>
+      </div>
+    </main>
   );
 }
