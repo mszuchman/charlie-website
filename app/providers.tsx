@@ -6,9 +6,9 @@ import { useEffect } from "react";
 
 export function PHProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
-    posthog.init("phc_rGHG2xhMBy8eJosr4vExuPSGzCQjwjnh4aJkbTGBxZeC", {
-      api_host: "https://us.i.posthog.com",
-      ui_host: "https://us.posthog.com",
+    posthog.init("phc_sAGWo9gvdkQhCeJfE7J9KSatHxRvvUQLuYKbxqu29vYL", {
+      api_host: "https://eu.i.posthog.com",
+      ui_host: "https://eu.posthog.com",
       capture_pageview: true,
       capture_pageleave: true,
       session_recording: {
