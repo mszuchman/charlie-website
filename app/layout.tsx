@@ -15,7 +15,7 @@ const lato = Lato({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://lodecharlie.com"),
+  metadataBase: new URL("https://charliecafe.com"),
   title: "LoDeCharlie MAD — Café en Madrid, Próximamente 2026",
   description:
     "LoDeCharlie es un café de barrio con alma que abre en Madrid en 2026. Apúntate para ser el primero en enterarte.",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "es_ES",
-    url: "https://lodecharlie.com",
+    url: "https://charliecafe.com",
     siteName: "LoDeCharlie MAD",
     title: "LoDeCharlie MAD — Café en Madrid, Próximamente 2026",
     description:
@@ -52,8 +52,8 @@ const jsonLd = {
   "@type": "CafeOrCoffeeShop",
   name: "LoDeCharlie MAD",
   description: "Un café de barrio con alma. Próximamente en Madrid, 2026.",
-  url: "https://lodecharlie.com",
-  logo: "https://lodecharlie.com/logo.png",
+  url: "https://charliecafe.com",
+  logo: "https://charliecafe.com/logo.png",
   address: {
     "@type": "PostalAddress",
     addressLocality: "Madrid",
